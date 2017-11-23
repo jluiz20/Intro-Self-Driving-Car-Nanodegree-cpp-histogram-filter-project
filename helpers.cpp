@@ -19,6 +19,30 @@
 
 using namespace std;
 
+vector < vector <float> > zeros(int height, int width);
+
+/**
+    Sum all itens in a grid 
+
+    @param grid - a two dimensional grid (vector of vectors of floats)
+		   where each entry represents the unnormalized probability 
+		   associated with that grid cell.
+
+    @return - the sum of all itens.
+*/
+float sumAllGridItens(vector< vector <float> > grid) {
+
+	int sum = 0;
+	for(int i = 0; i < grid.size();i++){
+		vector< float> row;
+		for (int j = 0; j < grid[0].size(); j++){
+			sum += grid[i][j];
+		}
+	}
+	return sum;
+}
+
+
 /**
 	TODO - implement this function
 
@@ -36,9 +60,21 @@ vector< vector<float> > normalize(vector< vector <float> > grid) {
 	vector< vector<float> > newGrid;
 
 	// todo - your code here
+	
+	int sum = sumAllGridItens(grid);
+	//normalize it
+	for(int i = 0; i < grid.size();i++){
+		vector< float> row;
+		for (int j = 0; j < grid[0].size(); j++){
+			float newValue = grid[i][j] /= sum;
+		row.push_back(newValue);
+		}
+		newGrid.push_back(row);
+	}
 
 	return newGrid;
 }
+
 
 /**
 	TODO - implement this function.
@@ -78,6 +114,38 @@ vector < vector <float> > blur(vector < vector < float> > grid, float blurring) 
 	vector < vector <float> > newGrid;
 	
 	// your code here
+	int height = grid.size();
+	int width = grid[0].size();
+
+	newGrid = zeros(height,width); //initialize it with zeros
+
+	float center_prob = 1.00 - blurring;
+	float adjacent_prob = blurring / 6.0;
+	float corner_prob = blurring / 12.0;
+
+	vector< vector<float>> window = {
+		{corner_prob, adjacent_prob, corner_prob},
+		{adjacent_prob,center_prob,adjacent_prob},
+		{corner_prob, adjacent_prob, corner_prob}
+		};
+	//vector< vector<float>> window (arr, arr + sizeof(arr) / sizeof(arr[0]) );
+	
+	for(int i = 0; i < grid.size();i++){
+		for (int j = 0; j < grid[0].size(); j++){
+			float gridValue = grid[i][j];
+			for (int dx = 0; dx < window.size(); dx++){
+				for (int dy = 0; dy < window[0].size(); dy++){
+					float mult = window[dx][dy];
+                    int new_i = (i + dy) % height;
+                    int new_j = (j + dx) % width;
+					//std::cout << "/* newGrid */" <<new_i][new_j] << '\n';
+					std::cout << "/* mult * gridValue */" << mult * gridValue << '\n';
+                    //newGrid[new_i][new_j] += mult * gridValue;
+				}
+			}
+		}
+	}
+	
 
 	return normalize(newGrid);
 }

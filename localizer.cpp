@@ -40,9 +40,17 @@ using namespace std;
 */
 vector< vector <float> > initialize_beliefs(vector< vector <char> > grid) {
 	vector< vector <float> > newGrid;
-
+	int rows = grid.size();
+	int cols = grid[0].size();
+	int itens = rows * cols;
 	// your code here
-	
+	for(int i = 0; i < rows;i++){
+		vector< float> row;
+		for (int j = 0; j < cols; j++){
+			row.push_back(1/itens);
+		}
+		newGrid.push_back(row);
+	}
 	return newGrid;
 }
 
@@ -92,6 +100,15 @@ vector< vector <float> > sense(char color,
 	vector< vector <float> > newGrid;
 
 	// your code here
+	for(int i = 0; i < grid.size();i++){
+		vector< float> row;
+		for (int j = 0; j < grid[0].size(); j++){
+			bool hit = grid[i][j] == color;
+			float newBelief = beliefs[i][j] * (hit * p_hit + (1-hit) * p_miss);
+			row.push_back(newBelief);
+		}
+		newGrid.push_back(row);
+	}
 
 	return normalize(newGrid);
 }
@@ -142,6 +159,14 @@ vector< vector <float> > move(int dy, int dx,
 	vector < vector <float> > newGrid;
 
 	// your code here
+	for(int i = 0; i < beliefs.size();i++){
+		vector< float> row;
+		for (int j = 0; j < beliefs[0].size(); j++){
+			
+		}
+		newGrid.push_back(row);
+	}
+
 
 	return blur(newGrid, blurring);
 }
