@@ -43,11 +43,12 @@ vector< vector <float> > initialize_beliefs(vector< vector <char> > grid) {
 	int rows = grid.size();
 	int cols = grid[0].size();
 	int itens = rows * cols;
+	float belief_per_cell = 1.0/itens;
 	// your code here
 	for(int i = 0; i < rows;i++){
 		vector< float> row;
 		for (int j = 0; j < cols; j++){
-			row.push_back(1/itens);
+			row.push_back(belief_per_cell);
 		}
 		newGrid.push_back(row);
 	}
@@ -153,18 +154,20 @@ vector< vector <float> > sense(char color,
 */
 vector< vector <float> > move(int dy, int dx, 
 	vector < vector <float> > beliefs,
-	float blurring) 
-{
+	float blurring) {
+
+	int height = beliefs.size();
+	int width = beliefs[0].size();
 
 	vector < vector <float> > newGrid;
-
+	newGrid = zeros(height,width);
 	// your code here
 	for(int i = 0; i < beliefs.size();i++){
-		vector< float> row;
 		for (int j = 0; j < beliefs[0].size(); j++){
-			
+			int new_i = (i + dy ) % height;
+            int new_j = (j + dx ) % width;
+            newGrid[int(new_i)][int(new_j)] = beliefs[i][j];
 		}
-		newGrid.push_back(row);
 	}
 
 

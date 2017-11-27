@@ -66,6 +66,7 @@ vector< vector<float> > normalize(vector< vector <float> > grid) {
 	for(int i = 0; i < grid.size();i++){
 		vector< float> row;
 		for (int j = 0; j < grid[0].size(); j++){
+			//divide all itens by the sum
 			float newValue = grid[i][j] /= sum;
 		row.push_back(newValue);
 		}
@@ -123,6 +124,7 @@ vector < vector <float> > blur(vector < vector < float> > grid, float blurring) 
 	float adjacent_prob = blurring / 6.0;
 	float corner_prob = blurring / 12.0;
 
+	//the probability window
 	vector< vector<float>> window = {
 		{corner_prob, adjacent_prob, corner_prob},
 		{adjacent_prob,center_prob,adjacent_prob},
@@ -137,10 +139,7 @@ vector < vector <float> > blur(vector < vector < float> > grid, float blurring) 
 					float mult = window[dx+1][dy+1];
                     int new_i = (i + dy) % height;
                     int new_j = (j + dx) % width;
-					//std::cout << "/* newGrid */" <<new_i][new_j] << '\n';
-					//std::cout << "/* mult * gridValue */" << mult * gridValue << '\n';
                     newGrid[new_i][new_j] += (mult * gridValue);
-					//cout<< "Grid value" << newGrid[new_i][new_j];
 				}
 			}
 		}
