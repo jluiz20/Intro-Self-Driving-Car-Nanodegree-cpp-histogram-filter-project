@@ -32,7 +32,7 @@ vector < vector <float> > zeros(int height, int width);
 */
 float sumAllGridItens(vector< vector <float> > grid) {
 
-	int sum = 0;
+	float sum = 0;
 	for(int i = 0; i < grid.size();i++){
 		vector< float> row;
 		for (int j = 0; j < grid[0].size(); j++){
@@ -61,7 +61,7 @@ vector< vector<float> > normalize(vector< vector <float> > grid) {
 
 	// todo - your code here
 	
-	int sum = sumAllGridItens(grid);
+	float sum = sumAllGridItens(grid);
 	//normalize it
 	for(int i = 0; i < grid.size();i++){
 		vector< float> row;
@@ -128,25 +128,23 @@ vector < vector <float> > blur(vector < vector < float> > grid, float blurring) 
 		{adjacent_prob,center_prob,adjacent_prob},
 		{corner_prob, adjacent_prob, corner_prob}
 		};
-	//vector< vector<float>> window (arr, arr + sizeof(arr) / sizeof(arr[0]) );
 	
-	for(int i = 0; i < grid.size();i++){
-		for (int j = 0; j < grid[0].size(); j++){
+	for(int i = 0; i < height ; i++){
+		for (int j = 0; j < width; j++){
 			float gridValue = grid[i][j];
-			for (int dx = 0; dx < window.size(); dx++){
-				for (int dy = 0; dy < window[0].size(); dy++){
-					float mult = window[dx][dy];
+			for (int dx = -1; dx < window.size()-1; dx++){
+				for (int dy = -1; dy < window[0].size()-1; dy++){
+					float mult = window[dx+1][dy+1];
                     int new_i = (i + dy) % height;
                     int new_j = (j + dx) % width;
 					//std::cout << "/* newGrid */" <<new_i][new_j] << '\n';
-					std::cout << "/* mult * gridValue */" << mult * gridValue << '\n';
-                    //newGrid[new_i][new_j] += mult * gridValue;
+					//std::cout << "/* mult * gridValue */" << mult * gridValue << '\n';
+                    newGrid[new_i][new_j] += (mult * gridValue);
+					//cout<< "Grid value" << newGrid[new_i][new_j];
 				}
 			}
 		}
 	}
-	
-
 	return normalize(newGrid);
 }
 
