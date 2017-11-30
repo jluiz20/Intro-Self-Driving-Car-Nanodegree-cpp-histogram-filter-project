@@ -39,19 +39,11 @@ using namespace std;
            0.25 0.25
 */
 vector< vector <float> > initialize_beliefs(vector< vector <char> > grid) {
-	vector< vector <float> > newGrid;
 	int rows = grid.size();
 	int cols = grid[0].size();
 	int itens = rows * cols;
-	float belief_per_cell = 1.0/itens;
-	// your code here
-	for(int i = 0; i < rows;i++){
-		vector< float> row;
-		for (int j = 0; j < cols; j++){
-			row.push_back(belief_per_cell);
-		}
-		newGrid.push_back(row);
-	}
+	float beliefs_per_cell = 1.0/itens;
+	vector< vector <float> > newGrid (rows , vector< float >(cols , beliefs_per_cell));
 	return newGrid;
 }
 
@@ -104,9 +96,8 @@ vector< vector <float> > sense(char color,
 	for(int i = 0; i < grid.size();i++){
 		vector< float> row;
 		for (int j = 0; j < grid[0].size(); j++){
-			bool hit = grid[i][j] == color;
-			float newBelief = beliefs[i][j] * (hit * p_hit + (1-hit) * p_miss);
-			row.push_back(newBelief);
+			float p = (color==grid[i][j])?p_hit:p_miss;
+			row.push_back(beliefs[i][j]*p);
 		}
 		newGrid.push_back(row);
 	}
